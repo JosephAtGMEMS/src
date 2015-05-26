@@ -133,3 +133,25 @@ int Calibration(void)
   
     return 0; 
 }
+
+void get_HP_status(void)
+{
+    int err;
+    char buff[2];
+    /* 1. check REG_PID(0x00) */
+    i2c_byte_write(i2c,(int)GMA1302_REG_PID);
+    err=i2c_read(i2c, GMA302_Addr,&buff[0] , 1, 1);
+    printf("GMA1302_REG_PID=%x,err%d\n",buff[0],err);
+
+    buff[0] = GMA1302_REG_CONTR1;//reg
+    buff[1] = 0x09;//command
+    err=i2c_write(i2c,GMA302_Addr,&buff[0] , 2, 1);
+    printf("Set High pass filter off,turn low pass filter on ... %d\n",err);
+    
+    /* 2. check GMA1302_REG_PID(0x00) */
+    i2c_byte_write(i2c,(int)GMA1302_REG_CONTR1);
+    err=i2c_read(i2c, GMA302_Addr,&buff[0] , 1, 1);
+    printf("GMA1302_REG_CONTR1=%x,err%d\n",buff[0],err);
+    
+    
+}

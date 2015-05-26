@@ -38,6 +38,7 @@ extern void Format(char *str,int x,int y,int z);
 extern void get_Gxyz(int *xyz);
 extern int Calibration(void);
 extern void get_offset(int *off);
+extern void get_HP_status(void);
 
 /* Device specific constant values */
 #define AK09911_REG_WIA1			0x00

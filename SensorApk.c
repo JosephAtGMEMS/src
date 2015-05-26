@@ -17,11 +17,15 @@ void SensorWORK(void *p)
     i2c_frequency(&i2cmaster,MBED_I2C_BUS_CLK);
      
     InitGMA30x(&i2cmaster);
-    Calibration();
+    get_HP_status();
+    
+    /*
+    Calibration();   
     while(1)
     {
       get_Gxyz(&g[0]);
       Format(buf,g[0],g[1],g[2]);
       printf("(x,y,z)=%s\n",buf);     
     }
+    */
 }
