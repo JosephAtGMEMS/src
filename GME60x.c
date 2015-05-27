@@ -71,20 +71,25 @@ void InitGME60x(i2c_t *i2c_master)
 
 void ReadGME60x(int *x,int *y,int *z)
 {
-    unsigned char buff[11]={0,0,0,0,0,0,0,0,0,0,0};
+    unsigned char buff[AKM_SENSOR_DATA_SIZE]={0,0,0,0,0,0,0,0,0};
     int err=0,i;
-        buff[0]=0x00;
-	buff[0] = GMA1302_REG_STADR;// GMA1302_REG_PID;
-        i2c_byte_write(i2ce,(int)GMA1302_REG_STADR);
-	err=i2c_read(i2ce, GMA302_Addr,&buff[0],11,1);
-         
-        //for(i=0;i<11;i++)
-        //    printf("0x%x%x ",(buff[i]&0xf0)>>4,(buff[i]&0xf));
-        //printf("\n ");
-	//raw data, need layout translate, please reference to datasheet
-        
-	*x =-((int) *(signed short*)&buff[5])>>1;// X axis 
-	*y =-((int) *(signed short*)&buff[3])>>1;// Y axis 
-	*z =((int) *(signed short*)&buff[7])>>1;// Z axis       
+	buff[0] = AK09911_REG_ST1;
+        i2c_write(i2ce, M_sensor_Addr, &buff[0], 1, 1);
+	err=i2c_read(i2ce, M_sensor_Addr,&buff[0],AKM_SENSOR_DATA_SIZE,1);
+/*        printf("\n Mag raw data:");
+        for(i=0;i<9;i++) 
+          printf("0x%x,",buff[i]);
+        printf("\n");
+*/	*x =(int) *(signed short*)&buff[1];// X axis 
+	*y =(int) *(signed short*)&buff[3];// Y axis 
+	*z =(int) *(signed short*)&buff[5];// Z axis 
 }
 
+void get_Mxyz(int *xyz)
+{
+    //int raw[3];
+    ReadGME60x(&xyz[0],&xyz[1],&xyz[2]);
+    //xyz[0]=raw[0];//-offset[0];
+    //xyz[1]=raw[1];//-offset[1];
+    //xyz[2]=raw[2];//-offset[2];
+}
