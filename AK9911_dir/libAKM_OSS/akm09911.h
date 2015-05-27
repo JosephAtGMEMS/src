@@ -1,49 +1,8 @@
-#include "i2c_api.h"
 /*
  * Definitions for akm09911 compass chip.
  */
-#ifndef GMA30x_H
-#define GMA30x_H
-#include "AK9911_dir/AKFS_Compass.h"
-#include "AK9911_dir/AKFS_Common.h"
-#include "AK9911_dir/AKFS_Measure.h"
-#include "AK9911_dir/AKFS_APIs.h"
-#include "Fusion/MahonyAHRS.h"
-     
-#define	GMA302_Addr     (0x18)
-#define	M_sensor_Addr   (0x0c)
-// GMA302
-/* Registers */
-#define GMA1302_REG_PID 	0x00
-#define GMA1302_REG_PD 		0x01
-#define GMA1302_REG_ACTR 	0x02
-#define GMA1302_REG_MTHR 	0x03
-#define GMA1302_REG_STADR 	0x04
-#define GMA1302_REG_STATUS 	0x05
-#define GMA1302_REG_DX	 	0x06
-#define GMA1302_REG_INTCR 	0x15
-#define GMA1302_REG_CONTR1 	0x16
-#define GMA1302_REG_CONTR2 	0x17
-#define GMA1302_REG_CONTR3 	0x18
-#define GMA1302_REG_OSM	 	0x38
-
-#define GMA1302_MODE_RESET			0x02
-#define GMA1302_MODE_POWERDOWN		0x05
-
-#define GMA302_VAL_WMI				0x02
-#define GMA303_VAL_WMI				0x03
-#define GMA303_VAL_WMI_RD			0x33
-#define GMA1302_VAL_OFFSET_TC_ON	0x40
-#define GMA1302_VAL_DATA_READY_ON	0x2a
-     
-#define GMS_DEFAULT_SENSITIVITY 256     
-extern void ReadGMA30x(int *x,int *y,int *z);
-extern void InitGMA30x(i2c_t  *i2cmaster);
-extern void Format(char *str,int x,int y,int z);
-extern void get_Gxyz(int *xyz);
-extern int Calibration(void);
-extern void get_offset(int *off);
-extern void get_HP_status(void);
+#ifndef AKM09911_H
+#define AKM09911_H
 
 /* Device specific constant values */
 #define AK09911_REG_WIA1			0x00
@@ -111,9 +70,29 @@ extern void get_HP_status(void);
 #define ACC_DATA_READY		(1<<(ACC_DATA_FLAG))
 #define MAG_DATA_READY		(1<<(MAG_DATA_FLAG))
 #define FUSION_DATA_READY	(1<<(FUSION_DATA_FLAG))
-
+#define AKM_SENSITIVITY			0.6f
 #define AKMIO				0xA1
 
+/* IOCTLs for AKM library
+#define ECS_IOCTL_READ				_IOWR(AKMIO, 0x01, char)
+#define ECS_IOCTL_WRITE				_IOW(AKMIO, 0x02, char)
+#define ECS_IOCTL_RESET				_IO(AKMIO, 0x03)
+#define ECS_IOCTL_SET_MODE			_IOW(AKMIO, 0x10, char)
+#define ECS_IOCTL_SET_YPR			_IOW(AKMIO, 0x11, int[AKM_YPR_DATA_SIZE])
+#define ECS_IOCTL_GET_INFO			_IOR(AKMIO, 0x20, unsigned char[AKM_SENSOR_INFO_SIZE])
+#define ECS_IOCTL_GET_CONF			_IOR(AKMIO, 0x21, unsigned char[AKM_SENSOR_CONF_SIZE])
+#define ECS_IOCTL_GET_DATA			_IOR(AKMIO, 0x22, unsigned char[AKM_SENSOR_DATA_SIZE])
+#define ECS_IOCTL_GET_OPEN_STATUS	_IOR(AKMIO, 0x23, int)
+#define ECS_IOCTL_GET_CLOSE_STATUS	_IOR(AKMIO, 0x24, int)
+#define ECS_IOCTL_GET_DELAY			_IOR(AKMIO, 0x25, long long int)
+#define ECS_IOCTL_GET_LAYOUT		_IOR(AKMIO, 0x26, char)
+#define ECS_IOCTL_GET_ACCEL			_IOR(AKMIO, 0x30, short[3])
+*/
+struct akm09911_platform_data {
+	char layout;
+	int gpio_DRDY;
+	int gpio_RSTN;
+};
 
 #endif
 

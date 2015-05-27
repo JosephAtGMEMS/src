@@ -5,6 +5,7 @@
 #include <example_entry.h>
 #include "SensorAPK.h"
 
+
 extern void wlan_netowrk(void);
 extern void console_init(void);
 /**

@@ -45,7 +45,9 @@ void InitGMA30x(i2c_t *i2c_master)
         printf(" Powerdown reset ... %d\n",err);
         
 	/* 2. check GMA1302_REG_PID(0x00) */
-	i2c_byte_write(i2c,(int)GMA1302_REG_PID);
+	//i2c_byte_write(i2c,(int)GMA1302_REG_PID);
+        buff[0]=GMA1302_REG_PID;
+	i2c_write(i2c, GMA302_Addr, &buff[0], 1, 1);
  	err=i2c_read(i2c, GMA302_Addr,&buff[0] , 1, 1);
         printf("GMA1302_REG_PID=%d,err%d\n",buff[0],err);
         for(i=0;i<2;i++)
@@ -75,8 +77,9 @@ void ReadGMA30x(int *x,int *y,int *z)
     int err=0,i;
         buff[0]=0x00;
 	buff[0] = GMA1302_REG_STADR;// GMA1302_REG_PID;
-        i2c_byte_write(i2c,(int)GMA1302_REG_STADR);
-	err=i2c_read(i2c, GMA302_Addr,&buff[0],11,1);
+        //i2c_byte_write(i2c,(int)GMA1302_REG_STADR);
+	i2c_write(i2c, GMA302_Addr, &buff[0], 1, 1);
+        err=i2c_read(i2c, GMA302_Addr,&buff[0],11,1);
          
         //for(i=0;i<11;i++)
         //    printf("0x%x%x ",(buff[i]&0xf0)>>4,(buff[i]&0xf));
