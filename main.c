@@ -4,7 +4,7 @@
 #include "main.h"
 #include <example_entry.h>
 #include "SensorAPK.h"
-
+#include "timer_api.h"
 
 extern void wlan_netowrk(void);
 extern void console_init(void);

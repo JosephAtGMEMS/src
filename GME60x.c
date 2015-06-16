@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include "GMA30x.h"
 
-//typedef struct sensor_data{
 volatile i2c_t *i2ce;
 AKMPRMS pmem;
 AKMPRMS *prms=(AKMPRMS*)&pmem;
-//}
+unsigned char	regs[3];
+
 
 void InitGME60x(i2c_t *i2c_master)
 {
@@ -15,11 +15,7 @@ void InitGME60x(i2c_t *i2c_master)
         i2ce=i2c_master;
         printf("Init_GME60x(M sensor)...size of pmem=%d\n",sizeof(pmem));
         
-//	i2c_write(i2c, GMA302_Addr, &buff[0], 1, 1);
-//        err=i2c_read(i2c, GMA302_Addr,&buff[0],11,1);
-
 	AKFS_PATNO	pat=PAT1;
-	unsigned char	regs[3];
 
         buff[0]=AK09911_REG_WIA1;
         i2c_write(i2ce, M_sensor_Addr, &buff[0], 1, 1);
@@ -40,6 +36,7 @@ void InitGME60x(i2c_t *i2c_master)
         regs[0]=buff[0];
         regs[1]=buff[1];
         regs[2]=buff[2];
+        
 	printf("Asax,Asay,Asaz=0x%x,0x%x,0x%x\n",buff[0],buff[1],buff[2]);//asax,asay,asaz
         
 	//(3)Set PowerDown mode
@@ -92,4 +89,15 @@ void get_Mxyz(int *xyz)
     //xyz[0]=raw[0];//-offset[0];
     //xyz[1]=raw[1];//-offset[1];
     //xyz[2]=raw[2];//-offset[2];
+}
+
+void getgM(char* str)
+{
+    volatile int g[3],M[3];
+    char buf[30];
+    get_Gxyz(&g[0]);
+    get_Mxyz(&M[0]);
+    Format(buf,g[0],g[1],g[2]); strcpy(str,buf);
+    Format(buf,M[0],M[1],M[2]); strcat(str,",");strcat(str,buf);
+
 }

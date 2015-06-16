@@ -86,9 +86,9 @@ void ReadGMA30x(int *x,int *y,int *z)
         //printf("\n ");
 	//raw data, need layout translate, please reference to datasheet
         
-	*x =-((int) *(signed short*)&buff[5])>>1;// X axis 
-	*y =-((int) *(signed short*)&buff[3])>>1;// Y axis 
-	*z =((int) *(signed short*)&buff[7])>>1;// Z axis       
+	*x =((int) *(signed short*)&buff[5])>>1;// X axis 
+	*y =((int) *(signed short*)&buff[3])>>1;// Y axis 
+	*z =-((int) *(signed short*)&buff[7])>>1;// Z axis       
 }
 
 void get_offset(int *off)
@@ -130,7 +130,7 @@ int Calibration(void)
     
     offset[0]=sum[0]/COUNT;
     offset[1]=sum[1]/COUNT;
-    offset[2]=sum[2]/COUNT+ GMS_DEFAULT_SENSITIVITY;
+    offset[2]=sum[2]/COUNT- GMS_DEFAULT_SENSITIVITY;
     //Format(buf,offset[0],offset[1],offset[2]);
     //printf("offset=%s \n",buf);     
   

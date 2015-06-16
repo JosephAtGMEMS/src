@@ -14,7 +14,7 @@
 #define MBED_I2C_MTR_SDA    PB_3
 #define MBED_I2C_MTR_SCL    PB_2
 
-#define MBED_I2C_BUS_CLK        100000  //hz
+#define MBED_I2C_BUS_CLK        400000  //hz
 
 extern void SensorWORK(void *p);
 
